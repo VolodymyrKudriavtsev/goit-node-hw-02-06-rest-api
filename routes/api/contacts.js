@@ -1,16 +1,30 @@
 const express = require("express");
 
 const contacts = require("../../models/contacts");
+const { HttpError } = require("../../helpers");
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
-  const result = await contacts.listContacts();
-  res.json(result);
+  try {
+    const result = await contacts.listContacts();
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  try {
+    const { contactId } = req.params;
+    const result = await contacts.getContactById(contactId);
+    if (!result) {
+      throw HttpError(404, `Contact with id="${contactId}" not found`);
+    }
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post("/", async (req, res, next) => {
