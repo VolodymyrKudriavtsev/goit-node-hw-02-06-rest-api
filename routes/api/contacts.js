@@ -1,42 +1,10 @@
 const express = require("express");
-const Joi = require("joi");
 
 const contacts = require("../../models/contacts");
 const { HttpError } = require("../../helpers");
+const { addSchema, updateSchema } = require("./validation");
 
 const router = express.Router();
-
-const schema = Joi.object({
-  name: Joi.string().required().messages({
-    "any.required": `missing required name field`,
-    "string.empty": `name cannot be an empty field`,
-  }),
-
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
-    })
-    .required()
-    .messages({
-      "any.required": `missing required email field`,
-      "string.empty": `email cannot be an empty field`,
-    }),
-
-  phone: Joi.string()
-    .min(7)
-    .max(10)
-    .pattern(/^[0-9]+$/)
-    .required()
-    .messages({
-      "any.required": `missing required phone field`,
-      "string.empty": `phone cannot be an empty field`,
-      "string.pattern.base":
-        "the phone number can only contain numbers from 0 to 9",
-      "string.min": `the phone number can contain from 7 to 10 characters`,
-      "string.max": `the phone number can contain from 7 to 10 characters`,
-    }),
-});
 
 router.get("/", async (_, res, next) => {
   try {
@@ -62,7 +30,7 @@ router.get("/:contactId", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { error } = schema.validate(req.body);
+    const { error } = addSchema.validate(req.body);
     if (error) {
       throw HttpError(400, error.message);
     }
@@ -88,7 +56,7 @@ router.delete("/:contactId", async (req, res, next) => {
 
 router.put("/:contactId", async (req, res, next) => {
   try {
-    const { error } = schema.validate(req.body);
+    const { error } = updateSchema.validate(req.body);
     if (error) {
       throw HttpError(400, error.message);
     }
