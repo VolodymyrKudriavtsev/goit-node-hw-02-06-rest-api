@@ -30,6 +30,8 @@ const addSchema = Joi.object({
       "string.min": `the phone number can contain from 7 to 10 characters`,
       "string.max": `the phone number can contain from 7 to 10 characters`,
     }),
+
+  favorite: Joi.boolean(),
 });
 
 const updateSchema = Joi.object({

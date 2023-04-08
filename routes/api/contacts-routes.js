@@ -8,12 +8,12 @@ const router = express.Router();
 
 router.get("/", ctrl.listContacts);
 
-router.get("/:contactId", ctrl.getContactById);
+// router.get("/:contactId", ctrl.getContactById);
 
 router.post("/", validateBody(addSchema), ctrl.addContact);
 
-router.delete("/:contactId", ctrl.removeContact);
+// router.delete("/:contactId", ctrl.removeContact);
 
-router.put("/:contactId", validateBody(updateSchema), ctrl.updateContact);
+// router.put("/:contactId", validateBody(updateSchema), ctrl.updateContact);
 
 module.exports = router;
