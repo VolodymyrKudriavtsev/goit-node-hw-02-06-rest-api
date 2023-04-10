@@ -56,7 +56,7 @@ const addContact = Joi.object({
       "string.max": `the phone number can contain from 7 to 10 characters`,
     }),
 
-  favorite: Joi.boolean().required(),
+  favorite: Joi.boolean(),
 });
 
 const updateContact = Joi.object({
