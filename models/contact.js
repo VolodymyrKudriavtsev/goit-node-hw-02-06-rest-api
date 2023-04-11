@@ -1,6 +1,31 @@
+const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const addSchema = Joi.object({
+const { mongooseError } = require("../utils");
+
+const contactSchema = Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { versionKey: false }
+);
+
+contactSchema.post("save", mongooseError);
+
+const addContact = Joi.object({
   name: Joi.string().required().messages({
     "any.required": `missing required name field`,
     "string.empty": `name cannot be an empty field`,
@@ -30,9 +55,11 @@ const addSchema = Joi.object({
       "string.min": `the phone number can contain from 7 to 10 characters`,
       "string.max": `the phone number can contain from 7 to 10 characters`,
     }),
+
+  favorite: Joi.boolean(),
 });
 
-const updateSchema = Joi.object({
+const updateContact = Joi.object({
   name: Joi.string().messages({
     "string.empty": `name cannot be an empty field`,
   }),
@@ -57,11 +84,27 @@ const updateSchema = Joi.object({
       "string.min": `the phone number can contain from 7 to 10 characters`,
       "string.max": `the phone number can contain from 7 to 10 characters`,
     }),
+
+  favorite: Joi.boolean(),
 })
   .min(1)
   .messages({ "object.min": "missing fields" });
 
+const updateStatus = Joi.object({
+  favorite: Joi.boolean().required().messages({
+    "any.required": "missing field favorite",
+  }),
+});
+
+const schemas = {
+  addContact,
+  updateContact,
+  updateStatus,
+};
+
+const ContactModel = model("contact", contactSchema);
+
 module.exports = {
-  addSchema,
-  updateSchema,
+  ContactModel,
+  schemas,
 };
