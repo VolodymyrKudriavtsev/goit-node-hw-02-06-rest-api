@@ -1,4 +1,4 @@
-const { ctrlWrapper, validateId } = require("../utils");
+const { ctrlWrapper } = require("../utils");
 const { ContactModel } = require("../models/contact");
 const { HttpError } = require("../helpers");
 
@@ -9,7 +9,6 @@ const listContacts = async (req, res) => {
 
 const getContactById = async (req, res) => {
   const { contactId } = req.params;
-  validateId(contactId);
   const result = await ContactModel.findById(contactId);
   if (!result) {
     throw HttpError(404);
@@ -24,7 +23,6 @@ const addContact = async (req, res) => {
 
 const updateContact = async (req, res) => {
   const { contactId } = req.params;
-  validateId(contactId);
   const result = await ContactModel.findByIdAndUpdate(contactId, req.body, {
     new: true,
   });
@@ -36,7 +34,6 @@ const updateContact = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   const { contactId } = req.params;
-  validateId(contactId);
   const result = await ContactModel.findByIdAndUpdate(contactId, req.body, {
     new: true,
   });
@@ -48,7 +45,6 @@ const updateStatus = async (req, res) => {
 
 const removeContact = async (req, res) => {
   const { contactId } = req.params;
-  validateId(contactId);
   const result = await ContactModel.findByIdAndRemove(contactId);
   if (!result) {
     throw HttpError(404);
