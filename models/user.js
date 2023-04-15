@@ -3,6 +3,8 @@ const Joi = require("joi");
 
 const { mongooseError } = require("../utils");
 
+const subscriptions = ["starter", "pro", "business"];
+
 const userSchema = Schema(
   {
     email: {
@@ -18,7 +20,7 @@ const userSchema = Schema(
 
     subscription: {
       type: String,
-      enum: ["starter", "pro", "business"],
+      enum: subscriptions,
       default: "starter",
     },
 
@@ -49,7 +51,17 @@ const userRegLog = Joi.object({
   }),
 });
 
-const schemas = { userRegLog };
+const updateSubscription = Joi.object({
+  subscription: Joi.string()
+    .valid(...subscriptions)
+    .required()
+    .messages({
+      "any.required": "missing field subscription",
+      "any.only": "invalid subscription type",
+    }),
+});
+
+const schemas = { userRegLog, updateSubscription };
 
 const User = model("user", userSchema);
 
