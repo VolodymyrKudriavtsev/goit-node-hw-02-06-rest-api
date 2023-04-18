@@ -25,6 +25,8 @@ const userSchema = Schema(
     },
 
     token: String,
+
+    avatarURL: String,
   },
 
   { versionKey: false }
