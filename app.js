@@ -6,16 +6,6 @@ require("dotenv").config();
 const usersRouter = require("./routes/api/users-routes");
 const contactsRouter = require("./routes/api/contacts-routes");
 
-// const { sendEmail } = require("./helpers");
-
-// const data = {
-//   to: "vladimirkud@ukr.net",
-//   subject: "Nodemailer test",
-//   html: `<p>Привіт. Ми тестуємо надсилання листів!</p>`,
-// };
-
-// sendEmail(data);
-
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";

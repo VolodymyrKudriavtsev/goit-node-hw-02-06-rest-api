@@ -63,6 +63,19 @@ const userRegLog = Joi.object({
   }),
 });
 
+const resendVerifyEmail = Joi.object({
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net"] },
+    })
+    .required()
+    .messages({
+      "any.required": `missing required email field`,
+      "string.empty": `email cannot be an empty field`,
+    }),
+});
+
 const updateSubscription = Joi.object({
   subscription: Joi.string()
     .valid(...subscriptions)
@@ -73,7 +86,7 @@ const updateSubscription = Joi.object({
     }),
 });
 
-const schemas = { userRegLog, updateSubscription };
+const schemas = { userRegLog, updateSubscription, resendVerifyEmail };
 
 const User = model("user", userSchema);
 
