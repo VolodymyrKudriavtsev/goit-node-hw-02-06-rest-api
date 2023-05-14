@@ -3,9 +3,10 @@ const { News } = require("../models/news-temporary");
 // const { HttpError } = require("../helpers");
 
 const allNews = async (req, res) => {
-  const { page = 1, limit = 20 } = req.query;
+  const { page = 1, limit = 20, q } = req.query;
+  console.log("q:", q);
   const skip = (page - 1) * limit;
-  const hits = await News.find({}, null, {
+  const hits = await News.find({ title: { $regex: q } }, null, {
     skip,
     limit,
   }).sort({ date: -1 });
