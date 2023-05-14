@@ -6,6 +6,8 @@ require("dotenv").config();
 const usersRouter = require("./routes/api/users-routes");
 const contactsRouter = require("./routes/api/contacts-routes");
 
+const newsRouterTemporary = require("./routes/api/news-routes-temporary");
+
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -17,6 +19,8 @@ app.use(express.static("public"));
 
 app.use("/users", usersRouter);
 app.use("/api/contacts", contactsRouter);
+
+app.use("/news", newsRouterTemporary);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
